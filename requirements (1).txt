@@ -1,0 +1,15 @@
+# Core Dependencies
+yfinance==0.2.28
+pandas==2.0.3
+numpy==1.24.3
+
+# Telegram Bot
+python-telegram-bot==20.5
+
+# Charting
+matplotlib==3.7.2
+mplfinance==0.12.9b7
+
+# Utilities
+python-dateutil==2.8.2
+pytz==2023.3
