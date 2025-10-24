@@ -42,11 +42,11 @@ TARGET_PERCENTAGE_1 = 1.2  # 1.2% first target
 TARGET_PERCENTAGE_2 = 2.0  # 2.0% second target
 
 # Chart Configuration
-CHART_SAVE_PATH = "/home/claude/charts/"
+CHART_SAVE_PATH = "CHART_SAVE_PATH = "/home/admin01/charts/"
 CHART_STYLE = "yahoo"  # Chart style
 
 # Logging Configuration
-LOG_FILE = "/home/claude/trading_bot.log"
+LOG_FILE = "LOG_FILE = "/home/admin01/trading_bot.log"
 LOG_LEVEL = "INFO"  # DEBUG, INFO, WARNING, ERROR
 
 # Performance Settings
