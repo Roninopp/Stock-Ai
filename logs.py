@@ -122,7 +122,8 @@ class PerformanceTracker:
         self.signals_sent = 0
         self.errors = 0
         
-    def record_scan_.time(self, duration):
+    # THIS IS THE FIXED LINE:
+    def record_scan_time(self, duration):
         self.scan_times.append(duration)
         if len(self.scan_times) > 100:
             self.scan_times.pop(0)
@@ -151,4 +152,6 @@ class PerformanceTracker:
         }
 
 performance_tracker = PerformanceTracker()
-# (The "ENDOFFILE" line has been removed)
+
+# THIS IS THE OTHER FIX:
+# The "ENDOFFILE" line that was here has been removed.
