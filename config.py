@@ -2,9 +2,13 @@
 Configuration file for Nifty 50 Trading Bot
 """
 
+import os
+
 # Telegram Bot Configuration
-TELEGRAM_BOT_TOKEN = "6506132532:AAGjfMXlSkefR5uldDwCRhxdk7YRES5385k"  # Your bot token
-TELEGRAM_CHAT_ID = "-1003103484269"  # Your group chat ID
+# WARNING: Hardcoding tokens is a major security risk.
+# Use environment variables instead.
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "6506132532:AAGjfMXlSkefR5uldDwCRhxdk7YRES5385k")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "-1003103484269")
 
 # Trading Configuration
 NIFTY_50_STOCKS = [
@@ -42,11 +46,13 @@ TARGET_PERCENTAGE_1 = 1.2  # 1.2% first target
 TARGET_PERCENTAGE_2 = 2.0  # 2.0% second target
 
 # Chart Configuration
-CHART_SAVE_PATH = "CHART_SAVE_PATH = "/home/admin01/charts/"
+# FIXED: Removed the extra "CHART_SAVE_PATH = " from the string
+CHART_SAVE_PATH = "/home/admin01/charts/"
 CHART_STYLE = "yahoo"  # Chart style
 
 # Logging Configuration
-LOG_FILE = "LOG_FILE = "/home/admin01/trading_bot.log"
+# FIXED: Removed the extra "LOG_FILE = " from the string
+LOG_FILE = "/home/admin01/trading_bot.log"
 LOG_LEVEL = "INFO"  # DEBUG, INFO, WARNING, ERROR
 
 # Performance Settings
