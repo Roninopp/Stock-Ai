@@ -5,9 +5,14 @@ Configuration file for Nifty 50 Trading Bot
 import os
 
 # Telegram Bot Configuration
-# Use environment variables on your VPS for security
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "6506132532:AAGjfMXlSkefR5uldDwCRhxdk7YRES5385k")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "-1003103484269")
+
+# --- NEW APPROVAL SETTINGS ---
+# Get your ID from @userinfobot on Telegram
+ADMIN_USER_ID = 123456789  # <--- !!! IMPORTANT: REPLACE THIS WITH YOUR OWN TELEGRAM ID !!!
+APPROVAL_FILE = "/home/admin01/Stock-Ai/approved_users.json"
+# -----------------------------
 
 # Trading Configuration
 NIFTY_50_STOCKS = [
@@ -45,12 +50,10 @@ TARGET_PERCENTAGE_1 = 1.2  # 1.2% first target
 TARGET_PERCENTAGE_2 = 2.0  # 2.0% second target
 
 # Chart Configuration
-# This is the line I fixed for you before
 CHART_SAVE_PATH = "/home/admin01/charts/"
 CHART_STYLE = "yahoo"  # Chart style
 
 # Logging Configuration
-# This is the other line I fixed for you
 LOG_FILE = "/home/admin01/trading_bot.log"
 LOG_LEVEL = "INFO"  # DEBUG, INFO, WARNING, ERROR
 
