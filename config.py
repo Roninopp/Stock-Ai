@@ -1,9 +1,13 @@
+"""
 Configuration file for Nifty 50 Trading Bot
 """
 
+import os
+
 # Telegram Bot Configuration
-TELEGRAM_BOT_TOKEN = "6506132532:AAGjfMXlSkefR5uldDwCRhxdk7YRES5385k"
-TELEGRAM_CHAT_ID = "-1003103484269"
+# Use environment variables on your VPS for security
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "6506132532:AAGjfMXlSkefR5uldDwCRhxdk7YRES5385k")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "-1003103484269")
 
 # Trading Configuration
 NIFTY_50_STOCKS = [
@@ -20,39 +24,40 @@ NIFTY_50_STOCKS = [
 ]
 
 # Scanning Configuration
-SCAN_INTERVAL = 60
-TIMEFRAME = "5m"
-LOOKBACK_PERIODS = 100
+SCAN_INTERVAL = 60  # seconds (1 minute)
+TIMEFRAME = "5m"  # 5-minute candles
+LOOKBACK_PERIODS = 100  # Number of candles to analyze
 
 # Strategy Parameters
 RSI_PERIOD = 14
 RSI_OVERSOLD = 30
 RSI_OVERBOUGHT = 70
-VOLUME_SPIKE_MULTIPLIER = 1.5
+VOLUME_SPIKE_MULTIPLIER = 1.5  # Volume should be 1.5x average
 
 # Support/Resistance Configuration
-SR_LOOKBACK = 50
-SR_TOUCH_THRESHOLD = 0.5
+SR_LOOKBACK = 50  # Periods to look back for S/R levels
+SR_TOUCH_THRESHOLD = 0.5  # % threshold for price near S/R
 
 # Risk Management
-MIN_RISK_REWARD_RATIO = 1.5
-STOP_LOSS_PERCENTAGE = 0.8
-TARGET_PERCENTAGE_1 = 1.2
-TARGET_PERCENTAGE_2 = 2.0
+MIN_RISK_REWARD_RATIO = 1.5  # Minimum 1:1.5 RR
+STOP_LOSS_PERCENTAGE = 0.8  # 0.8% stop loss
+TARGET_PERCENTAGE_1 = 1.2  # 1.2% first target
+TARGET_PERCENTAGE_2 = 2.0  # 2.0% second target
 
 # Chart Configuration
-CHART_SAVE_PATH = "/home/admin01/Stock-Ai/charts/"
-CHART_STYLE = "yahoo"
+# This is the line I fixed for you before
+CHART_SAVE_PATH = "/home/admin01/charts/"
+CHART_STYLE = "yahoo"  # Chart style
 
 # Logging Configuration
-LOG_FILE = "/home/admin01/Stock-Ai/trading_bot.log"
-LOG_LEVEL = "INFO"
+# This is the other line I fixed for you
+LOG_FILE = "/home/admin01/trading_bot.log"
+LOG_LEVEL = "INFO"  # DEBUG, INFO, WARNING, ERROR
 
 # Performance Settings
-MAX_WORKERS = 10
-ENABLE_CHART_GENERATION = True
+MAX_WORKERS = 10  # Number of parallel workers for scanning
+ENABLE_CHART_GENERATION = True  # Set to False for faster performance
 
 # Data Source
-DATA_SOURCE = "yahoo"
-CACHE_DURATION = 300
-ENDOFFILE
+DATA_SOURCE = "yahoo"  # Using Yahoo Finance
+CACHE_DURATION = 300  # Cache data for 5 minutes
