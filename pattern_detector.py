@@ -225,4 +225,4 @@ class PatternDetector:
         bearish_close = candle['Close'] <= candle['Open']
         
         return long_upper_wick and small_lower and bearish_close
-ENDOFFILE
+
