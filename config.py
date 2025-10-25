@@ -10,7 +10,7 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "-1003103484269")
 
 # --- NEW APPROVAL SETTINGS ---
 # Get your ID from @userinfobot on Telegram
-ADMIN_USER_ID = 123456789  # <--- !!! IMPORTANT: REPLACE THIS WITH YOUR OWN TELEGRAM ID !!!
+ADMIN_USER_ID = 6837532865  # <--- !!! IMPORTANT: REPLACE THIS WITH YOUR OWN TELEGRAM ID !!!
 APPROVAL_FILE = "/home/admin01/Stock-Ai/approved_users.json"
 # -----------------------------
 
