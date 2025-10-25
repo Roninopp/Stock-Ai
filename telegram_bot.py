@@ -15,6 +15,10 @@ from data_fetcher import DataFetcher
 from logs import logger, performance_tracker
 import config
 
+# --- NEW IMPORT ---
+from approval import add_user, is_user_approved
+# ------------------
+
 class TradingBot:
     def __init__(self):
         """Initialize the trading bot"""
@@ -28,6 +32,19 @@ class TradingBot:
     
     async def start_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle /start command"""
+        
+        user_id = update.effective_user.id
+        
+        # --- NEW APPROVAL CHECK ---
+        if not is_user_approved(user_id):
+            logger.info(f"Unapproved user {user_id} tried to start the bot.")
+            await update.message.reply_text(
+                "You Are Normal Civilian For Become Member Of Samurai Network And Get Approval From My Creator = @DushmanXRoninn"
+            )
+            return
+        # ---------------------------
+        
+        # Original welcome message for approved users
         welcome_message = """
 🤖 *Welcome to Nifty 50 Trading Bot!*
 
@@ -48,10 +65,55 @@ This bot scans Nifty 50 stocks for high-probability trading opportunities using:
 *Ready to find profitable setups!* 🚀
         """
         await update.message.reply_text(welcome_message, parse_mode=ParseMode.MARKDOWN)
-        logger.info(f"Bot started by user: {update.effective_user.id}")
-    
+        logger.info(f"Bot started by approved user: {user_id}")
+
+    # --- NEW ADDUSER COMMAND ---
+    async def adduser_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /adduser <user_id> command (Admin only)"""
+        admin_id = update.effective_user.id
+        
+        # 1. Check if the person sending the command is the Admin
+        if admin_id != config.ADMIN_USER_ID:
+            logger.warning(f"Non-admin user {admin_id} tried to use /adduser")
+            await update.message.reply_text("❌ This command is for the bot creator only.")
+            return
+
+        # 2. Check if they provided a user_id
+        if not context.args:
+            await update.message.reply_text("Usage: /adduser [user_id]")
+            return
+            
+        try:
+            user_id_to_add = int(context.args[0])
+        except ValueError:
+            await update.message.reply_text("❌ Invalid User ID. It must be a number.")
+            return
+
+        # 3. Add the user
+        if add_user(user_id_to_add):
+            await update.message.reply_text(f"✅ User {user_id_to_add} has been approved!")
+            # Optionally send a message to the new user
+            try:
+                await self.application.bot.send_message(
+                    chat_id=user_id_to_add,
+                    text="Congratulations! You have been approved by the creator. You can now use the bot. Send /start to begin."
+                )
+            except Exception as e:
+                logger.error(f"Could not send approval message to {user_id_to_add}: {e}")
+        else:
+            await update.message.reply_text(f"⚠️ User {user_id_to_add} was already approved.")
+    # ---------------------------
+
     async def autotrade_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle /autotrade on/off command"""
+        
+        # --- NEW APPROVAL CHECK ---
+        user_id = update.effective_user.id
+        if not is_user_approved(user_id):
+            await update.message.reply_text("You are not approved to use this bot.")
+            return
+        # --------------------------
+        
         if not context.args:
             await update.message.reply_text(
                 "Usage: /autotrade on OR /autotrade off"
@@ -95,6 +157,13 @@ This bot scans Nifty 50 stocks for high-probability trading opportunities using:
     
     async def status_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle /status command"""
+        # --- NEW APPROVAL CHECK ---
+        user_id = update.effective_user.id
+        if not is_user_approved(user_id):
+            await update.message.reply_text("You are not approved to use this bot.")
+            return
+        # --------------------------
+
         stats = performance_tracker.get_stats()
         market_status, market_msg = self.data_fetcher.get_market_status()
         
@@ -122,6 +191,13 @@ This bot scans Nifty 50 stocks for high-probability trading opportunities using:
     
     async def logs_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle /logs command"""
+        # --- NEW APPROVAL CHECK ---
+        user_id = update.effective_user.id
+        if not is_user_approved(user_id):
+            await update.message.reply_text("You are not approved to use this bot.")
+            return
+        # --------------------------
+
         recent_logs = logger.get_recent_logs(count=15)
         
         if not recent_logs:
@@ -138,6 +214,13 @@ This bot scans Nifty 50 stocks for high-probability trading opportunities using:
     
     async def scan_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle /scan command - manual one-time scan"""
+        # --- NEW APPROVAL CHECK ---
+        user_id = update.effective_user.id
+        if not is_user_approved(user_id):
+            await update.message.reply_text("You are not approved to use this bot.")
+            return
+        # --------------------------
+
         await update.message.reply_text("🔍 Starting manual scan of all Nifty 50 stocks...")
         
         signals = self.scanner.scan_all_stocks()
@@ -154,6 +237,13 @@ This bot scans Nifty 50 stocks for high-probability trading opportunities using:
     
     async def help_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle /help command"""
+        # --- NEW APPROVAL CHECK ---
+        user_id = update.effective_user.id
+        if not is_user_approved(user_id):
+            await update.message.reply_text("You are not approved to use this bot.")
+            return
+        # --------------------------
+
         help_message = """
 📚 *HELP & COMMANDS*
 
@@ -170,7 +260,7 @@ This bot scans Nifty 50 stocks for high-probability trading opportunities using:
 1️⃣ Bot scans all Nifty 50 stocks every minute
 2️⃣ Detects reversal patterns at key S/R levels
 3️⃣ Confirms with ICT concepts (Order Blocks, etc.)
-4️⃣ Validates with RSI and Volume
+44️⃣ Validates with RSI and Volume
 5️⃣ Sends you high-probability signals with charts
 
 *Signal Quality:*
@@ -292,6 +382,11 @@ Happy Trading! 📈
         
         # Add command handlers
         self.application.add_handler(CommandHandler("start", self.start_command))
+        
+        # --- NEW HANDLER ---
+        self.application.add_handler(CommandHandler("adduser", self.adduser_command))
+        # -------------------
+        
         self.application.add_handler(CommandHandler("autotrade", self.autotrade_command))
         self.application.add_handler(CommandHandler("status", self.status_command))
         self.application.add_handler(CommandHandler("logs", self.logs_command))
