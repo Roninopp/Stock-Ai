@@ -30,7 +30,7 @@ NIFTY_50_STOCKS = [
 
 # Scanning Configuration
 SCAN_INTERVAL = 60  # seconds (1 minute)
-TIMEFRAME = "5m"  # 5-minute candles
+TIMEFRAME = "3m"  # 5-minute candles
 LOOKBACK_PERIODS = 100  # Number of candles to analyze
 
 # Strategy Parameters
@@ -63,4 +63,4 @@ ENABLE_CHART_GENERATION = True  # Set to False for faster performance
 
 # Data Source
 DATA_SOURCE = "yahoo"  # Using Yahoo Finance
-CACHE_DURATION = 300  # Cache data for 5 minutes
+CACHE_DURATION = 33  # Cache data for 5 minutes
